@@ -8,12 +8,19 @@
  * */
 
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+// Load environment variables from .env file
+dotenv.config();
 
 // Connect to MongoDB using Mongoose
-// In production, move URI to process.env.MONGO_URI (.env file)
 export async function connectDB() {
-  const uri =
-    "mongodb+srv://daeydev:CW0KhXAVefLYjBZS@cluster0.tm5thrs.mongodb.net/blogdb?retryWrites=true&w=majority&appName=Cluster0";
+  const uri = process.env.MONGO_URI;
+
+  if (!uri) {
+    console.error("Mongo URI not found in environment variables");
+    process.exit(1);
+  }
 
   try {
     await mongoose.connect(uri);
